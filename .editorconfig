@@ -89,8 +89,8 @@ keep_indents_on_empty_lines = false
 allow_non_indented_comments = false
 # [line space]
 # The following configuration supports four expressions
-# keep  
-# fixed(n)   
+# keep
+# fixed(n)
 # min(n)
 # max(n)
 # for eg. min(2)
