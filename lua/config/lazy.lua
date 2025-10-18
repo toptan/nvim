@@ -25,9 +25,9 @@ vim.opt.rtp:prepend(lazypath)
 vim.cmd("colorscheme retrobox")
 
 require("config.globals")
--- require("config.options")
--- require("config.keymaps")
--- require("config.autocmds")
+require("config.options")
+require("config.keymaps")
+require("config.autocmds")
 
 -- Setup lazy.nvim
 require("lazy").setup({
