@@ -12,5 +12,5 @@ return {
     scan_cmake_in_package = true, -- default is true
     semantic_token = false,
   },
-  -- capabilities = require("mini.completion").get_lsp_capabilities(),
+  capabilities = require("mini.completion").get_lsp_capabilities(),
 }
