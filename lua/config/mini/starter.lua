@@ -18,5 +18,5 @@ end
 require("mini.starter").setup({
   header = header_func,
   footer = footer_func,
-  query_updaters = "abcdefghijklmnopqrstuvwxyz0123456789_.",
+  query_updaters = "abcdefghijklmnopqrstuvwxyz0123456789_-",
 })

@@ -2,6 +2,8 @@
     "diagnostics.globals": [
         "vim",
         "MiniIcons",
-        "MiniCompletion"
+        "MiniCompletion",
+        "MiniFiles",
+        "MiniPick"
     ]
 }
