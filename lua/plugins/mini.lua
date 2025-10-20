@@ -5,6 +5,7 @@ return {
     require("config.mini.clue")
     require("config.mini.completion")
     require("config.mini.diff")
+    require("config.mini.base16")
     require("config.mini.files")
     require("config.mini.icons")
     require("config.mini.notify")
