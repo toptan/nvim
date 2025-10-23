@@ -22,7 +22,3 @@ require("mini.base16").setup({
     default = true,
   },
 })
-
-vim.schedule(function()
-  vim.cmd("colorscheme miniautumn")
-end)
