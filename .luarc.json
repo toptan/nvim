@@ -4,6 +4,8 @@
         "MiniIcons",
         "MiniCompletion",
         "MiniFiles",
-        "MiniPick"
+        "MiniPick",
+        "MiniBufremove",
+        "MiniIndentscope"
     ]
 }

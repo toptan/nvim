@@ -22,3 +22,5 @@ require("mini.base16").setup({
     default = true,
   },
 })
+
+vim.cmd("colorscheme miniwinter")
