@@ -13,13 +13,18 @@ local function create_keymaps(event)
   end
 
   --  To jump back, press <C-t>.
-  -- map("gd", Snacks.picker.lsp_definitions, "[G]oto [d]efinition")
-  -- map("gD", Snacks.picker.lsp_declarations, "[G]oto [D]eclaration")
-  -- map("gr", Snacks.picker.lsp_references, "[G]oto [r]eferences")
-
-  -- Jump to the implementation of the word under your cursor.
-  --  Useful when your language has ways of declaring types without an actual implementation.
-  -- map("gI", require("fzf-lua").lsp_implementations, "[G]oto [I]mplementation")
+  map("gd", function()
+    MiniExtra.pickers.lsp({ scope = "definition" })
+  end, "Goto definition")
+  map("gD", function()
+    MiniExtra.pickers.lsp({ scope = "declaration" })
+  end, "Goto declaration")
+  map("<leader>cr", function()
+    MiniExtra.pickers.lsp({ scope = "references" })
+  end, "[R]eferences")
+  map("gI", function()
+    MiniExtra.pickers.lsp({ scope = "implementation" })
+  end, "[G]oto [I]mplementation")
 
   -- Jump to the type of the word under your cursor.
   --  Useful when you're not sure what type a variable is and you want to see
@@ -34,13 +39,8 @@ local function create_keymaps(event)
   --  Similar to document symbols, except searches over your entire project.
   -- map("<leader>ws", require("fzf-lua").lsp_live_workspace_symbols, "[W]orkspace [S]ymbols")
 
-  -- Rename the variable under your cursor.
-  --  Most Language Servers support renaming across files, etc.
-  -- map("<leader>cr", vim.lsp.buf.rename, "[R]e[n]ame")
-
-  -- Execute a code action, usually your cursor needs to be on top of an error
-  -- or a suggestion from your LSP for this to activate.
-  -- map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
+  map("<leader>cr", vim.lsp.buf.rename, "[R]ename")
+  map("<leader>ca", vim.lsp.buf.code_action, "[A]ction", { "n", "x" })
 end
 
 local function setup_highlight_references_under_cursor(event)

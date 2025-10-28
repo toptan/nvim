@@ -6,6 +6,7 @@
         "MiniFiles",
         "MiniPick",
         "MiniBufremove",
-        "MiniIndentscope"
+        "MiniIndentscope",
+        "MiniExtra"
     ]
 }
