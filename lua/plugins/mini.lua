@@ -2,6 +2,7 @@ return {
   "nvim-mini/mini.nvim",
   version = false,
   config = function()
+    require("config.mini.ai")
     require("config.mini.base16")
     require("config.mini.bufremove")
     require("config.mini.clue")
@@ -9,12 +10,15 @@ return {
     require("config.mini.diff")
     require("config.mini.extra")
     require("config.mini.files")
+    require("config.mini.hipatterns")
     require("config.mini.icons")
     require("config.mini.indentscope")
     require("config.mini.notify")
+    require("config.mini.pairs")
     require("config.mini.pick")
     require("config.mini.starter")
     require("config.mini.statusline")
+    require("config.mini.surround")
     require("config.mini.trailspace")
   end,
 }
