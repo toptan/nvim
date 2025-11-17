@@ -125,6 +125,7 @@ return {
     for _, server in ipairs(servers) do
       vim.lsp.enable(server)
     end
+    vim.lsp.enable("clangd")
 
     -- Diagnostic Config
     -- See :help vim.diagnostic.Opts
