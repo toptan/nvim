@@ -30,12 +30,18 @@ require("config.autocmds")
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
+    -- Get colorscheme first
+    {
+      "catppuccin/nvim",
+      name = "catppuccin",
+      priority = 1000,
+    },
     -- import our plugins
     { import = "plugins" },
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "minischeme" } },
+  install = { colorscheme = { "catppuccin", "minischeme" } },
   -- automatically check for plugin updates
   checker = { enabled = true },
   change_detection = {

@@ -10,6 +10,7 @@ vim.opt.showmode = false
 --  See `:help 'clipboard'`
 vim.schedule(function()
   vim.opt.clipboard = "unnamedplus"
+  vim.cmd.colorscheme("catppuccin")
 end)
 
 vim.opt.breakindent = true
