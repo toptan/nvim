@@ -1,7 +1,8 @@
 local add = vim.pack.add
 
 -- Ayu colorscheme
-
+add({ "https://github.com/Shatur/neovim-ayu.git" })
+vim.cmd.colorscheme("ayu")
 
 -- Conform code formatting plugin
 add({ "https://github.com/stevearc/conform.nvim" })
