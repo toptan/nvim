@@ -1,47 +1,57 @@
 vim.pack.add({ "https://github.com/nvim-mini/mini.nvim" })
 
-local gr = vim.api.nvim_create_augroup("custom-config", {})
-local new_autocmd = function(event, pattern, callback, desc)
-  local opts =
-  { group = gr, pattern = pattern, callback = callback, desc = desc }
-  vim.api.nvim_create_autocmd(event, opts)
-end
+require("mini.misc").setup_termbg_sync()
 
-local misc = require("mini.misc")
-local now = function(f)
-  misc.safely("now", f)
-end
-local later = function(f)
-  misc.safely("later", f)
-end
-local now_if_args = vim.fn.argc(-1) > 0 and now or later
+-- Mini basics
+require("mini.basics").setup({
+  options = { basic = false },
+  mappings = {
+    -- Create `<C-hjkl>` mappings for window navigation
+    windows = true,
+    -- Create `<M-hjkl>` mappings for navigation in Insert and Command modes
+    move_with_alt = true,
+  },
+})
 
 -- Completion --
-now_if_args(function()
-  -- Customize post-processing of LSP responses for a better user experience.
-  -- Don't show 'Text' suggestions (usually noisy) and show snippets last.
-  local process_items_opts = { kind_priority = { Text = -1, Snippet = 99 } }
-  local process_items = function(items, base)
-    return MiniCompletion.default_process_items(items, base, process_items_opts)
-  end
-  require("mini.completion").setup({
-    lsp_completion = {
-      -- Without this config autocompletion is set up through `:h 'completefunc'`.
-      -- Although not needed, setting up through `:h 'omnifunc'` is cleaner
-      -- (sets up only when needed) and makes it possible to use `<C-u>`.
-      source_func = "omnifunc",
-      auto_setup = false,
-      process_items = process_items,
-    },
-  })
+require("mini.completion").setup({
+  lsp_completion = {
+    source_func = "omnifunc",
+    auto_setup = false, -- we set omnifunc manually in LspAttach
+  },
+})
 
-  -- Set 'omnifunc' for LSP completion only when needed.
-  local on_attach = function(ev)
-    vim.bo[ev.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
-  end
-  new_autocmd("LspAttach", nil, on_attach, "Set 'omnifunc'")
-
-  -- Advertise to servers that Neovim now supports certain set of completion and
-  -- signature features through 'mini.completion'.
-  vim.lsp.config("*", { capabilities = MiniCompletion.get_lsp_capabilities() })
-end)
+-- Keystroke clues
+local miniclue = require("mini.clue")
+-- stylua: ignore
+miniclue.setup({
+  -- Define which clues to show. By default shows only clues for custom mappings
+  -- (uses `desc` field from the mapping; takes precedence over custom clue).
+  clues = {
+    -- This is defined in 'plugin/20_keymaps.lua' with Leader group descriptions
+    -- Config.leader_group_clues,
+    miniclue.gen_clues.builtin_completion(),
+    miniclue.gen_clues.g(),
+    miniclue.gen_clues.marks(),
+    miniclue.gen_clues.registers(),
+    miniclue.gen_clues.square_brackets(),
+    miniclue.gen_clues.windows({ submode_resize = true }),
+    miniclue.gen_clues.z(),
+  },
+  -- Explicitly opt-in for set of common keys to trigger clue window
+  triggers = {
+    { mode = { "n", "x" }, keys = "<Leader>" }, -- Leader triggers
+    { mode = "n",          keys = "\\" },       -- mini.basics
+    { mode = { "n", "x" }, keys = "[" },        -- mini.bracketed
+    { mode = { "n", "x" }, keys = "]" },
+    { mode = "i",          keys = "<C-x>" },    -- Built-in completion
+    { mode = { "n", "x" }, keys = "g" },        -- `g` key
+    { mode = { "n", "x" }, keys = "'" },        -- Marks
+    { mode = { "n", "x" }, keys = "`" },
+    { mode = { "n", "x" }, keys = '"' },        -- Registers
+    { mode = { "i", "c" }, keys = "<C-r>" },
+    { mode = "n",          keys = "<C-w>" },    -- Window commands
+    { mode = { "n", "x" }, keys = "s" },        -- `s` key (mini.surround, etc.)
+    { mode = { "n", "x" }, keys = "z" },        -- `z` key
+  },
+})

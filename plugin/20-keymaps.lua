@@ -62,3 +62,12 @@ vim.keymap.set("v", "<A-j>", ":m '>+1<cr>gv=gv", { desc = "Move line down" })
 vim.keymap.set("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "Move line up" })
 vim.keymap.set("i", "<A-j>", "<Esc>:m .+1<cr>==gi", { desc = "Move line down" })
 vim.keymap.set("i", "<A-k>", "<Esc>:m .-2<cr>==gi", { desc = "Move line up" })
+
+-- Various toggles
+vim.keymap.set("n", "\\f", function()
+  if vim.o.foldlevel == 0 then
+    vim.o.foldlevel = 99
+  else
+    vim.o.foldlevel = 0
+  end
+end, { desc = "Toggle folds" })
