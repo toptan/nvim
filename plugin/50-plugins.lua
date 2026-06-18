@@ -26,4 +26,4 @@ require("conform").setup({
 
 vim.keymap.set("n", "<LEADER>cf", function()
   require("conform").format()
-end, { desc = "format" })
+end, { desc = "Format" })

@@ -122,12 +122,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- Inlay hints
     if client:supports_method("textDocument/inlayHint") then
       vim.lsp.inlay_hint.enable(true, { bufnr = buf })
-      vim.keymap.set("n", "\\h", function()
+      vim.keymap.set("n", "<Leader>th", function()
         vim.lsp.inlay_hint.enable(
           not vim.lsp.inlay_hint.is_enabled({ bufnr = ev.buf }),
           { bufnr = ev.buf }
         )
-      end, { buffer = ev.buf, desc = "Toggle inlay hints" })
+      end, { buffer = ev.buf, desc = "Inlay hints" })
     end
 
     -- Folding

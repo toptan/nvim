@@ -64,10 +64,14 @@ vim.keymap.set("i", "<A-j>", "<Esc>:m .+1<cr>==gi", { desc = "Move line down" })
 vim.keymap.set("i", "<A-k>", "<Esc>:m .-2<cr>==gi", { desc = "Move line up" })
 
 -- Various toggles
-vim.keymap.set("n", "\\f", function()
+vim.keymap.set("n", "<Leader>tf", function()
   if vim.o.foldlevel == 0 then
     vim.o.foldlevel = 99
   else
     vim.o.foldlevel = 0
   end
-end, { desc = "Toggle folds" })
+end, { desc = "Folds" })
+
+vim.keymap.set("n", "<Leader>tl", function()
+  vim.lsp.codelens.enable(not vim.lsp.codelens.is_enabled())
+end, { desc = "Code lens" })
