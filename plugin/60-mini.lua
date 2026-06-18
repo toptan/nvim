@@ -29,7 +29,7 @@ miniclue.setup({
   -- (uses `desc` field from the mapping; takes precedence over custom clue).
   clues = {
     -- This is defined in 'plugin/20_keymaps.lua' with Leader group descriptions
-    -- Config.leader_group_clues,
+    Config.leader_group_clues,
     miniclue.gen_clues.builtin_completion(),
     miniclue.gen_clues.g(),
     miniclue.gen_clues.marks(),

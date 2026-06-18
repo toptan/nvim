@@ -1,4 +1,8 @@
 -- We only set globals in init.lua
+
+-- Define a global table to share data between scripts
+_G.Config = {}
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 

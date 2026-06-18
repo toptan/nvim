@@ -1,7 +1,24 @@
+Config.leader_group_clues = {
+  { mode = "n", keys = "<Leader>b", desc = "+Buffer" },
+  { mode = "n", keys = "<Leader>c", desc = "+Code" },
+  { mode = "n", keys = "<Leader>e", desc = "+Explore/Edit" },
+  { mode = "n", keys = "<Leader>f", desc = "+Find" },
+  { mode = "n", keys = "<Leader>g", desc = "+Git" },
+  { mode = "n", keys = "<Leader>l", desc = "+Language" },
+  { mode = "n", keys = "<Leader>m", desc = "+Map" },
+  { mode = "n", keys = "<Leader>o", desc = "+Other" },
+  { mode = "n", keys = "<Leader>s", desc = "+Session" },
+  { mode = "n", keys = "<Leader>t", desc = "+Toggle" },
+  { mode = "n", keys = "<Leader>v", desc = "+Visits" },
+
+  { mode = "x", keys = "<Leader>g", desc = "+Git" },
+  { mode = "x", keys = "<Leader>l", desc = "+Language" },
+}
+
 local opts = { noremap = true, silent = true }
 
 -- Clear search highlights
-vim.keymap.set("n", "<ESC>", "<CMD>nohlsearch<CR>", opts)
+vim.keymap.set("n", "<Esc>", "<Cmd>nohlsearch<Cr>", opts)
 
 -- Delete single character without copy to register
 vim.keymap.set("n", "x", '"_x', opts)
