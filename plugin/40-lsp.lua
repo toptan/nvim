@@ -2,6 +2,28 @@ vim.lsp.enable({ "lua_ls" })
 
 -- Diagnostic Config
 -- See :help vim.diagnostic.Opts
+local function diagnostic_format(diagnostic)
+  local diagnostic_message = {
+    [vim.diagnostic.severity.ERROR] = diagnostic.message,
+    [vim.diagnostic.severity.WARN] = diagnostic.message,
+    [vim.diagnostic.severity.INFO] = diagnostic.message,
+    [vim.diagnostic.severity.HINT] = diagnostic.message,
+  }
+  return diagnostic_message[diagnostic.severity]
+end
+
+-- Diagnostic display modes, toggled with <Leader>tv
+local virtual_text = {
+  source = "if_many",
+  spacing = 2,
+  format = diagnostic_format,
+}
+local virtual_lines = {
+  source = "if_many",
+  spacing = 2,
+  format = diagnostic_format,
+}
+
 vim.diagnostic.config({
   severity_sort = true,
   float = {
@@ -11,33 +33,27 @@ vim.diagnostic.config({
   underline = {
     severity = vim.diagnostic.severity.ERROR,
   },
-  virtual_text = {
-    source = "if_many",
-    spacing = 2,
-    format = function(diagnostic)
-      local diagnostic_message = {
-        [vim.diagnostic.severity.ERROR] = diagnostic.message,
-        [vim.diagnostic.severity.WARN] = diagnostic.message,
-        [vim.diagnostic.severity.INFO] = diagnostic.message,
-        [vim.diagnostic.severity.HINT] = diagnostic.message,
-      }
-      return diagnostic_message[diagnostic.severity]
-    end,
-  },
-  virtual_lines = {
-    source = "if_many",
-    spacing = 2,
-    format = function(diagnostic)
-      local diagnostic_message = {
-        [vim.diagnostic.severity.ERROR] = diagnostic.message,
-        [vim.diagnostic.severity.WARN] = diagnostic.message,
-        [vim.diagnostic.severity.INFO] = diagnostic.message,
-        [vim.diagnostic.severity.HINT] = diagnostic.message,
-      }
-      return diagnostic_message[diagnostic.severity]
-    end,
-  },
+  -- virtual_text on by default; virtual_lines off (toggle with <Leader>tv)
+  virtual_text = virtual_text,
+  virtual_lines = false,
 })
+
+-- Toggle between virtual_text and virtual_lines diagnostic display
+vim.keymap.set("n", "<Leader>tv", function()
+  if vim.diagnostic.config().virtual_lines then
+    vim.diagnostic.config({ virtual_text = virtual_text, virtual_lines = false })
+  else
+    vim.diagnostic.config({
+      virtual_text = false,
+      virtual_lines = virtual_lines,
+    })
+  end
+end, { desc = "Virtual text/lines" })
+
+-- Toggle diagnostics on/off
+vim.keymap.set("n", "<Leader>td", function()
+  vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+end, { desc = "Diagnostics" })
 
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(ev)
@@ -73,7 +89,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- Document highlight
     if client:supports_method("textDocument/documentHighlight") then
       local highlight_group =
-          vim.api.nvim_create_augroup("LspHighlight_" .. buf, { clear = true })
+        vim.api.nvim_create_augroup("LspHighlight_" .. buf, { clear = true })
       vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
         group = highlight_group,
         buffer = buf,
@@ -89,7 +105,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- Format on save
     if client:supports_method("textDocument/formatting") then
       local format_group =
-          vim.api.nvim_create_augroup("LspFormat_" .. buf, { clear = true })
+        vim.api.nvim_create_augroup("LspFormat_" .. buf, { clear = true })
       vim.api.nvim_create_autocmd("BufWritePre", {
         group = format_group,
         buffer = buf,
