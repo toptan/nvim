@@ -27,4 +27,4 @@ vim.schedule(function()
   vim.opt.clipboard = "unnamedplus"
 end)
 
-vim.cmd.colorscheme("retrobox")
+vim.cmd.colorscheme("lunapercheplus")
