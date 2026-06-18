@@ -94,7 +94,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         group = format_group,
         buffer = buf,
         callback = function()
-          vim.lsp.buf.format({ bufnr = buf, id = client.id })
+          require("conform").format()
         end,
       })
     end
