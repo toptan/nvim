@@ -2,6 +2,10 @@ vim.pack.add({ "https://github.com/nvim-mini/mini.nvim" })
 
 require("mini.misc").setup_termbg_sync()
 
+require("mini.pairs").setup()
+
+require("mini.bracketed").setup()
+
 -- Mini basics
 require("mini.basics").setup({
   options = { basic = false },

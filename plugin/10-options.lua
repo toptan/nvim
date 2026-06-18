@@ -26,3 +26,5 @@ vim.opt.foldlevel = 99
 vim.schedule(function()
   vim.opt.clipboard = "unnamedplus"
 end)
+
+vim.cmd.colorscheme("retrobox")
