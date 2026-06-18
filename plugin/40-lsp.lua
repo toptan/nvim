@@ -53,9 +53,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
       vim.bo[buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
     end
 
-    -- Inlay hints
+    -- Inlay hints (off by default, toggle with <Leader>th)
     if client:supports_method("textDocument/inlayHint") then
-      vim.lsp.inlay_hint.enable(true, { bufnr = buf })
       vim.keymap.set("n", "<Leader>th", function()
         vim.lsp.inlay_hint.enable(
           not vim.lsp.inlay_hint.is_enabled({ bufnr = ev.buf }),
