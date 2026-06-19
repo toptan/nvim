@@ -1,4 +1,4 @@
-vim.lsp.enable({ "lua_ls" })
+vim.lsp.enable({ "lua_ls", "neocmake" })
 
 -- Diagnostic Config
 -- See :help vim.diagnostic.Opts
