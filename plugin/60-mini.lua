@@ -33,6 +33,9 @@ imap("<CR>", function()
   end
   return "<CR>"
 end)
+imap("<Esc>", function()
+  return vim.fn.pumvisible() == 1 and "<C-e><Esc>" or "<Esc>"
+end)
 
 -- mini.completion never preselects a candidate (completeopt=menuone,noselect), except we want
 -- the sole match to be preselected so <CR> can confirm it immediately.
