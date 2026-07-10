@@ -64,9 +64,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     local buf = ev.buf
 
-    -- Completion via mini.completion
+    -- Completion via mini.completion: LSP is the only source in this buffer,
+    -- so disable its buffer-keyword fallback (mini.completion wires its own
+    -- completefunc globally; this only narrows behavior where LSP is active).
     if client:supports_method("textDocument/completion") then
-      vim.bo[buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
+      vim.b[buf].minicompletion_config = { fallback_action = function() end }
     end
 
     -- Inlay hints (off by default, toggle with <Leader>th)

@@ -3,18 +3,23 @@
 Defines how plugins are declared, pinned, and configured (`plugin/50-plugins.lua`,
 `nvim-pack-lock.json`), using Neovim's native `vim.pack` package manager rather than a third-party
 plugin manager.
-
 ## Requirements
-
 ### Requirement: Native plugin declaration
 The system SHALL declare plugins via `vim.pack.add({...})` (native Neovim package management), with
-no third-party plugin-manager dependency (e.g. lazy.nvim, packer).
+no third-party plugin-manager dependency (e.g. lazy.nvim, packer). `mini.nvim` module
+configuration (e.g. `mini.completion`) SHALL be declared and configured in `plugin/60-mini.lua`,
+separate from other plugins configured in `plugin/50-plugins.lua`.
 
 #### Scenario: Adding a new plugin
 - **WHEN** a new plugin git URL is added to a `vim.pack.add({...})` call in
   `plugin/50-plugins.lua`
 - **THEN** Neovim installs and loads it on next startup via its native `vim.pack` mechanism, and
   its resolved revision is recorded in `nvim-pack-lock.json`
+
+#### Scenario: Adding a new mini.nvim module
+- **WHEN** a new `mini.nvim` module is configured in the future
+- **THEN** it is added via `vim.pack.add` and set up in `plugin/60-mini.lua`, not in
+  `plugin/50-plugins.lua`
 
 ### Requirement: Pinned plugin revisions
 The system SHALL record the exact installed revision and source URL of every plugin in
@@ -63,3 +68,4 @@ The system SHALL run `:TSUpdate` automatically when `nvim-treesitter` itself is 
 #### Scenario: Updating the nvim-treesitter plugin
 - **WHEN** `vim.pack` reports an `update` `PackChanged` event for `nvim-treesitter`
 - **THEN** `:TSUpdate` runs automatically to refresh installed parsers
+

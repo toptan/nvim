@@ -39,10 +39,15 @@ numerically prefixed. This ordering is load-bearing:
    "+Git") consumed by whichever which-key-style plugin reads it.
 4. `plugin/30-autocmds.lua` — misc autocmds (currently just yank highlighting).
 5. `plugin/40-lsp.lua` — enables LSP servers, diagnostic config/toggles, and the `LspAttach`
-   autocmd that wires per-buffer behavior (completion via `mini.completion`, inlay hints, native
-   LSP folding, document highlight, format-on-save (currently commented out)).
+   autocmd that wires per-buffer behavior (disabling `mini.completion`'s buffer-keyword fallback
+   when a completion-capable client attaches, inlay hints, native LSP folding, document highlight,
+   format-on-save (currently commented out)).
 6. `plugin/50-plugins.lua` — declares plugins via `vim.pack.add` and configures each one
    immediately after adding it (see `conform.nvim` and `nvim-treesitter` setup inline).
+7. `plugin/60-mini.lua` — all `mini.nvim` module configuration (currently just
+   `mini.completion`: LSP-only source, no snippet expansion, Tab/S-Tab popup navigation, Enter to
+   confirm, sole-match auto-preselect via a `CompleteChanged` autocmd). Add future `mini.nvim`
+   modules here, not in `plugin/50-plugins.lua`.
 
 `after/lsp/<name>.lua` files are per-server LSP configs (`vim.lsp.Config` tables), auto-loaded by
 Neovim's native LSP client when a server of that name is enabled in `plugin/40-lsp.lua`. To add a

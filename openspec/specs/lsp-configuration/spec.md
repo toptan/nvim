@@ -2,9 +2,7 @@
 
 Defines LSP server enablement, diagnostic display/config, and per-buffer LSP-attach behavior
 (`plugin/40-lsp.lua`), plus the per-server settings under `after/lsp/`.
-
 ## Requirements
-
 ### Requirement: Enabled LSP servers
 The system SHALL enable the `lua_ls` and `neocmake` LSP servers via `vim.lsp.enable({...})`, each
 configured by its own `after/lsp/<name>.lua` file (a `vim.lsp.Config` table) auto-loaded by
@@ -61,16 +59,18 @@ The system SHALL toggle all diagnostics on/off with `<Leader>td` in normal mode.
 
 ### Requirement: Per-buffer LSP-attach behavior
 The system SHALL, on `LspAttach`, configure per-buffer behavior conditional on client
-capabilities: set `omnifunc` to mini.completion's LSP completer if the client supports
-completion; expose an inlay-hint toggle keymap (`<Leader>th`, buffer-local) if the client supports
-inlay hints; enable expression folding via `vim.lsp.foldexpr()` if the client supports folding
-range; and, if the client supports document highlight, highlight references on `CursorHold`/
-`CursorHoldI` and clear them on `CursorMoved`/`CursorMovedI` (via a per-buffer augroup named
-`LspHighlight_<bufnr>`).
+capabilities: if the client supports completion, disable `mini.completion`'s buffer-based
+fallback completion for that buffer (via a buffer-local `vim.b.minicompletion_config` override)
+so only LSP-sourced completions are offered there; expose an inlay-hint toggle keymap
+(`<Leader>th`, buffer-local) if the client supports inlay hints; enable expression folding via
+`vim.lsp.foldexpr()` if the client supports folding range; and, if the client supports document
+highlight, highlight references on `CursorHold`/`CursorHoldI` and clear them on `CursorMoved`/
+`CursorMovedI` (via a per-buffer augroup named `LspHighlight_<bufnr>`).
 
 #### Scenario: A completion-capable server attaches
 - **WHEN** an LSP client supporting `textDocument/completion` attaches to a buffer
-- **THEN** that buffer's `omnifunc` is set to `v:lua.MiniCompletion.completefunc_lsp`
+- **THEN** that buffer's `vim.b.minicompletion_config` is set so buffer-based fallback
+  completion is disabled for that buffer, leaving only LSP-sourced completions available
 
 #### Scenario: An inlay-hint-capable server attaches
 - **WHEN** an LSP client supporting `textDocument/inlayHint` attaches to a buffer
@@ -90,3 +90,4 @@ The system SHALL, on `LspDetach`, remove the buffer's `LspHighlight_<bufnr>` and
 - **WHEN** an LSP client detaches from a buffer that had document-highlight augroups registered
 - **THEN** those augroups are removed and reference highlights are cleared, without erroring if
   they were never created
+
