@@ -2,7 +2,7 @@
 -- `require("mini.<module>").setup({...})` block below.
 local add = vim.pack.add
 
-add({ "https://github.com/echasnovski/mini.nvim" })
+add({ "https://github.com/nvim-mini/mini.nvim" })
 
 -- See also:
 -- - `:h mini.completion`
