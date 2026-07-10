@@ -1,0 +1,24 @@
+schema: spec-driven
+
+context: |
+  Personal Neovim (0.12+) configuration. Pure Lua, no build step, no test suite.
+  Built on native Neovim features instead of a plugin-manager framework:
+  vim.pack.add for plugins (pinned in nvim-pack-lock.json), vim.lsp.enable for LSP,
+  mini.completion for completion.
+  plugin/*.lua files are auto-sourced by Neovim in lexical (numeric-prefix) order;
+  that ordering is load-bearing (see CLAUDE.md). after/lsp/<name>.lua holds per-server
+  LSP configs, auto-loaded by the native LSP client.
+  Custom colorschemes (colors/*.lua) are thin wrappers around lua/retro/init.lua,
+  which layers modern highlight groups onto built-in base colorschemes.
+  Format Lua with stylua, cmake with gersemi (via conform.nvim, <Leader>cf).
+  See CLAUDE.md at the repo root for full architecture notes.
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always include a "Non-goals" section
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
