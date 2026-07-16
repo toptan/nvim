@@ -44,10 +44,13 @@ numerically prefixed. This ordering is load-bearing:
    format-on-save (currently commented out)).
 6. `plugin/50-plugins.lua` — declares plugins via `vim.pack.add` and configures each one
    immediately after adding it (see `conform.nvim` and `nvim-treesitter` setup inline).
-7. `plugin/60-mini.lua` — all `mini.nvim` module configuration (currently just
-   `mini.completion`: LSP-only source, no snippet expansion, Tab/S-Tab popup navigation, Enter to
-   confirm, sole-match auto-preselect via a `CompleteChanged` autocmd). Add future `mini.nvim`
-   modules here, not in `plugin/50-plugins.lua`.
+7. `plugin/60-mini.lua` — all `mini.nvim` module configuration: `mini.completion` (LSP-only
+   source, no snippet expansion, Tab/S-Tab popup navigation, Enter to confirm — falling through to
+   `mini.pairs`' smart Enter when no item is selected — sole-match auto-preselect via a
+   `CompleteChanged` autocmd); `mini.pairs` and `mini.bracketed` (default configuration); `mini.clue`
+   (popup triggers for `<Leader>`, using `Config.leader_group_clues` from `plugin/20-keymaps.lua`,
+   plus `g`, `z`, marks, registers, windows, and `mini.bracketed`'s `[`/`]` groups). Add future
+   `mini.nvim` modules here, not in `plugin/50-plugins.lua`.
 
 `after/lsp/<name>.lua` files are per-server LSP configs (`vim.lsp.Config` tables), auto-loaded by
 Neovim's native LSP client when a server of that name is enabled in `plugin/40-lsp.lua`. To add a
