@@ -249,9 +249,7 @@ palettes.lunaperche = {
 -- Color utilities, ported from catppuccin (lua/catppuccin/utils/colors.lua).
 local function hex_to_rgb(hex)
   hex = hex:gsub("#", "")
-  return tonumber(hex:sub(1, 2), 16),
-    tonumber(hex:sub(3, 4), 16),
-    tonumber(hex:sub(5, 6), 16)
+  return tonumber(hex:sub(1, 2), 16), tonumber(hex:sub(3, 4), 16), tonumber(hex:sub(5, 6), 16)
 end
 
 -- alpha 0 -> bg, 1 -> fg
@@ -849,8 +847,7 @@ function M.load(opts)
     MiniTrailspace = { bg = C.red },
   }
 
-  local treesitter = (opts.flavor == "plus") and treesitter_plus(C)
-    or treesitter_retro(C)
+  local treesitter = (opts.flavor == "plus") and treesitter_plus(C) or treesitter_retro(C)
 
   apply(editor)
   apply(syntax)

@@ -25,6 +25,60 @@ require("mini.pairs").setup()
 -- - `:h mini.bracketed`
 require("mini.bracketed").setup()
 
+-- See also:
+-- - `:h mini.ai`
+local function treesitter_textobject(captures)
+  -- `gen_spec.treesitter()` errors (rather than reporting "no match") when the buffer's
+  -- language has no parser or no `textobjects.scm` query defining the requested captures.
+  -- Swallow that so `af`/`if`/`ac`/`ic` degrade to "nothing found" on unsupported filetypes.
+  local spec = require("mini.ai").gen_spec.treesitter(captures)
+  return function(...)
+    local ok, res = pcall(spec, ...)
+    if not ok then
+      return {}
+    end
+    return res
+  end
+end
+
+require("mini.ai").setup({
+  custom_textobjects = {
+    f = treesitter_textobject({ a = "@function.outer", i = "@function.inner" }),
+    c = treesitter_textobject({ a = "@class.outer", i = "@class.inner" }),
+  },
+})
+
+-- See also:
+-- - `:h mini.surround`
+require("mini.surround").setup()
+
+-- See also:
+-- - `:h mini.bufremove`
+require("mini.bufremove").setup()
+
+vim.keymap.set("n", "<Leader>bd", function()
+  require("mini.bufremove").delete(0, false)
+end, { desc = "Delete buffer" })
+
+vim.keymap.set("n", "<Leader>bD", function()
+  require("mini.bufremove").delete(0, true)
+end, { desc = "Force delete buffer" })
+
+-- See also:
+-- - `:h mini.notify`
+require("mini.notify").setup()
+vim.notify = require("mini.notify").make_notify()
+
+vim.keymap.set("n", "<Leader>on", require("mini.notify").show_history, { desc = "Notification history" })
+
+-- See also:
+-- - `:h mini.trailspace`
+require("mini.trailspace").setup()
+
+vim.keymap.set("n", "<Leader>cw", function()
+  require("mini.trailspace").trim()
+end, { desc = "Trim trailing whitespace" })
+
 local imap = function(lhs, rhs)
   vim.keymap.set("i", lhs, rhs, { expr = true })
 end
