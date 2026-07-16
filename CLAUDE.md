@@ -52,10 +52,12 @@ numerically prefixed. This ordering is load-bearing:
    query files from the `nvim-treesitter-textobjects` plugin dependency); `mini.surround` (default
    configuration); `mini.bufremove` (`<Leader>bd`/`<Leader>bD` delete/force-delete); `mini.notify`
    (wired as the `vim.notify` backend, `<Leader>on` shows history); `mini.trailspace` (default
-   highlighting, `<Leader>cw` manually trims); `mini.clue` (popup triggers for `<Leader>`, using
-   `Config.leader_group_clues` from `plugin/20-keymaps.lua`, plus `g`, `z`, marks, registers,
-   windows, and `mini.bracketed`'s `[`/`]` groups). Add future `mini.nvim` modules here, not in
-   `plugin/50-plugins.lua`.
+   highlighting, `<Leader>cw` manually trims); `mini.input` (wired as the `vim.ui.input()`
+   implementation); `mini.cursorword` (default configuration); `mini.files` (default configuration,
+   `-`/`<Leader>ed` toggle the explorer anchored on the current file / working directory); `mini.clue`
+   (popup triggers for `<Leader>`, using `Config.leader_group_clues` from `plugin/20-keymaps.lua`,
+   plus `g`, `z`, marks, registers, windows, and `mini.bracketed`'s `[`/`]` groups). Add future
+   `mini.nvim` modules here, not in `plugin/50-plugins.lua`.
 
 `after/lsp/<name>.lua` files are per-server LSP configs (`vim.lsp.Config` tables), auto-loaded by
 Neovim's native LSP client when a server of that name is enabled in `plugin/40-lsp.lua`. To add a

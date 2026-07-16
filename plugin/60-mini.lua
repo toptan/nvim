@@ -79,6 +79,32 @@ vim.keymap.set("n", "<Leader>cw", function()
   require("mini.trailspace").trim()
 end, { desc = "Trim trailing whitespace" })
 
+-- See also:
+-- - `:h mini.input`
+require("mini.input").setup()
+
+-- See also:
+-- - `:h mini.cursorword`
+require("mini.cursorword").setup()
+
+-- See also:
+-- - `:h mini.files`
+require("mini.files").setup()
+
+local function toggle_files(path)
+  if not require("mini.files").close() then
+    require("mini.files").open(path)
+  end
+end
+
+vim.keymap.set("n", "-", function()
+  toggle_files(vim.api.nvim_buf_get_name(0))
+end, { desc = "Toggle file explorer (current file)" })
+
+vim.keymap.set("n", "<Leader>ed", function()
+  toggle_files(vim.fn.getcwd())
+end, { desc = "Explore directory (cwd)" })
+
 local imap = function(lhs, rhs)
   vim.keymap.set("i", lhs, rhs, { expr = true })
 end
