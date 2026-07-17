@@ -58,7 +58,11 @@ numerically prefixed. This ordering is load-bearing:
    `mini.indentscope` (default configuration, step animation disabled); `mini.statusline` (custom
    `content.active` giving diagnostics counts per-severity coloring, otherwise default content);
    `mini.pick` (default configuration, `<Leader>ff`/`fg`/`fG`/`fb`/`fh`/`fr`/`fc` cover its seven
-   builtin pickers); `mini.clue` (popup triggers for `<Leader>`, using `Config.leader_group_clues`
+   builtin pickers); `mini.extra` (default configuration, adding 19 more `mini.pick` sources —
+   `<Leader>fd`/`fe`/`fk`/`fl`/`fm`/`fM`/`fo`/`fO`/`fR`/`fs`/`fT`/`fx`/`fy`/`fC`/`ft` for general
+   pickers, `<Leader>gb`/`gc`/`gf`/`gh` for Git pickers, and `<Leader>ld`/`lD`/`lo`/`li`/`lr`/`lt`/
+   `lw`/`lW` for the `lsp` picker's eight scopes, alongside Neovim's built-in default LSP keymaps);
+   `mini.clue` (popup triggers for `<Leader>`, using `Config.leader_group_clues`
    from `plugin/20-keymaps.lua`, plus `g`, `z`, marks, registers, windows, and `mini.bracketed`'s
    `[`/`]` groups). Add future `mini.nvim` modules here, not in `plugin/50-plugins.lua`.
 

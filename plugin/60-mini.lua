@@ -208,6 +208,118 @@ vim.keymap.set("n", "<Leader>fc", function()
   end)
 end, { desc = "Pick from CLI output" })
 
+-- See also:
+-- - `:h mini.extra`
+require("mini.extra").setup()
+
+vim.keymap.set("n", "<Leader>fd", function()
+  require("mini.extra").pickers.diagnostic()
+end, { desc = "Diagnostics" })
+
+vim.keymap.set("n", "<Leader>fe", function()
+  require("mini.extra").pickers.explorer()
+end, { desc = "File explorer (picker)" })
+
+vim.keymap.set("n", "<Leader>fk", function()
+  require("mini.extra").pickers.keymaps()
+end, { desc = "Keymaps" })
+
+vim.keymap.set("n", "<Leader>fl", function()
+  require("mini.extra").pickers.buf_lines()
+end, { desc = "Buffer lines" })
+
+vim.keymap.set("n", "<Leader>fm", function()
+  require("mini.extra").pickers.manpages()
+end, { desc = "Manpages" })
+
+vim.keymap.set("n", "<Leader>fM", function()
+  require("mini.extra").pickers.marks()
+end, { desc = "Marks" })
+
+vim.keymap.set("n", "<Leader>fo", function()
+  require("mini.extra").pickers.oldfiles()
+end, { desc = "Old files" })
+
+vim.keymap.set("n", "<Leader>fO", function()
+  require("mini.extra").pickers.options()
+end, { desc = "Options" })
+
+vim.keymap.set("n", "<Leader>fR", function()
+  require("mini.extra").pickers.registers()
+end, { desc = "Registers" })
+
+vim.keymap.set("n", "<Leader>fs", function()
+  require("mini.extra").pickers.spellsuggest()
+end, { desc = "Spelling suggestions" })
+
+vim.keymap.set("n", "<Leader>fT", function()
+  require("mini.extra").pickers.colorschemes()
+end, { desc = "Colorschemes" })
+
+vim.keymap.set("n", "<Leader>fx", function()
+  require("mini.extra").pickers.hl_groups()
+end, { desc = "Highlight groups" })
+
+vim.keymap.set("n", "<Leader>fy", function()
+  require("mini.extra").pickers.history()
+end, { desc = "Command/search history" })
+
+vim.keymap.set("n", "<Leader>fC", function()
+  require("mini.extra").pickers.commands()
+end, { desc = "Commands" })
+
+vim.keymap.set("n", "<Leader>ft", function()
+  require("mini.extra").pickers.treesitter()
+end, { desc = "Treesitter nodes" })
+
+vim.keymap.set("n", "<Leader>gb", function()
+  require("mini.extra").pickers.git_branches()
+end, { desc = "Git branches" })
+
+vim.keymap.set("n", "<Leader>gc", function()
+  require("mini.extra").pickers.git_commits()
+end, { desc = "Git commits" })
+
+vim.keymap.set("n", "<Leader>gf", function()
+  require("mini.extra").pickers.git_files()
+end, { desc = "Git files (tracked)" })
+
+vim.keymap.set("n", "<Leader>gh", function()
+  require("mini.extra").pickers.git_hunks()
+end, { desc = "Git hunks (unstaged)" })
+
+vim.keymap.set("n", "<Leader>ld", function()
+  require("mini.extra").pickers.lsp({ scope = "declaration" })
+end, { desc = "LSP declaration" })
+
+vim.keymap.set("n", "<Leader>lD", function()
+  require("mini.extra").pickers.lsp({ scope = "definition" })
+end, { desc = "LSP definition" })
+
+vim.keymap.set("n", "<Leader>lo", function()
+  require("mini.extra").pickers.lsp({ scope = "document_symbol" })
+end, { desc = "LSP document symbols (outline)" })
+
+vim.keymap.set("n", "<Leader>li", function()
+  require("mini.extra").pickers.lsp({ scope = "implementation" })
+end, { desc = "LSP implementation" })
+
+vim.keymap.set("n", "<Leader>lr", function()
+  require("mini.extra").pickers.lsp({ scope = "references" })
+end, { desc = "LSP references" })
+
+vim.keymap.set("n", "<Leader>lt", function()
+  require("mini.extra").pickers.lsp({ scope = "type_definition" })
+end, { desc = "LSP type definition" })
+
+vim.keymap.set("n", "<Leader>lw", function()
+  require("mini.extra").pickers.lsp({ scope = "workspace_symbol" })
+end, { desc = "LSP workspace symbols" })
+
+vim.keymap.set("n", "<Leader>lW", function()
+  require("mini.extra").pickers.lsp({ scope = "workspace_symbol_live" })
+end, { desc = "LSP workspace symbols (live)" })
+
 local imap = function(lhs, rhs)
   vim.keymap.set("i", lhs, rhs, { expr = true })
 end
