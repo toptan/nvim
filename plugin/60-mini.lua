@@ -105,6 +105,109 @@ vim.keymap.set("n", "<Leader>ed", function()
   toggle_files(vim.fn.getcwd())
 end, { desc = "Explore directory (cwd)" })
 
+-- See also:
+-- - `:h mini.indentscope`
+require("mini.indentscope").setup({
+  draw = {
+    animation = require("mini.indentscope").gen_animation.none(),
+  },
+})
+
+-- See also:
+-- - `:h mini.statusline`
+local function diagnostics_by_severity(trunc_width)
+  local ministatusline = require("mini.statusline")
+  if ministatusline.is_truncated(trunc_width) or not vim.diagnostic.is_enabled({ bufnr = 0 }) then
+    return {}
+  end
+
+  local count = vim.diagnostic.count(0)
+  local levels = {
+    { name = "ERROR", sign = "E", hl = "DiagnosticError" },
+    { name = "WARN", sign = "W", hl = "DiagnosticWarn" },
+    { name = "INFO", sign = "I", hl = "DiagnosticInfo" },
+    { name = "HINT", sign = "H", hl = "DiagnosticHint" },
+  }
+
+  local groups = {}
+  for _, level in ipairs(levels) do
+    local n = count[vim.diagnostic.severity[level.name]] or 0
+    if n > 0 then
+      table.insert(groups, { hl = level.hl, strings = { level.sign .. n } })
+    end
+  end
+  return groups
+end
+
+require("mini.statusline").setup({
+  content = {
+    active = function()
+      local ministatusline = require("mini.statusline")
+      local mode, mode_hl = ministatusline.section_mode({ trunc_width = 120 })
+      local git = ministatusline.section_git({ trunc_width = 40 })
+      local diff = ministatusline.section_diff({ trunc_width = 75 })
+      local lsp = ministatusline.section_lsp({ trunc_width = 75 })
+      local filename = ministatusline.section_filename({ trunc_width = 140 })
+      local fileinfo = ministatusline.section_fileinfo({ trunc_width = 120 })
+      local location = ministatusline.section_location({ trunc_width = 75 })
+      local search = ministatusline.section_searchcount({ trunc_width = 75 })
+
+      local groups = {
+        { hl = mode_hl, strings = { mode } },
+        { hl = "MiniStatuslineDevinfo", strings = { git, diff } },
+      }
+      vim.list_extend(groups, diagnostics_by_severity(75))
+      table.insert(groups, { hl = "MiniStatuslineDevinfo", strings = { lsp } })
+      table.insert(groups, "%<")
+      table.insert(groups, { hl = "MiniStatuslineFilename", strings = { filename } })
+      table.insert(groups, "%=")
+      table.insert(groups, { hl = "MiniStatuslineFileinfo", strings = { fileinfo } })
+      table.insert(groups, { hl = mode_hl, strings = { search, location } })
+
+      return ministatusline.combine_groups(groups)
+    end,
+  },
+})
+
+-- See also:
+-- - `:h mini.pick`
+require("mini.pick").setup()
+
+vim.keymap.set("n", "<Leader>ff", function()
+  require("mini.pick").builtin.files()
+end, { desc = "Find files" })
+
+vim.keymap.set("n", "<Leader>fg", function()
+  require("mini.pick").builtin.grep_live()
+end, { desc = "Live grep" })
+
+vim.keymap.set("n", "<Leader>fG", function()
+  require("mini.pick").builtin.grep()
+end, { desc = "Grep (pattern)" })
+
+vim.keymap.set("n", "<Leader>fb", function()
+  require("mini.pick").builtin.buffers()
+end, { desc = "Find buffers" })
+
+vim.keymap.set("n", "<Leader>fh", function()
+  require("mini.pick").builtin.help()
+end, { desc = "Find help tags" })
+
+vim.keymap.set("n", "<Leader>fr", function()
+  require("mini.pick").builtin.resume()
+end, { desc = "Resume last picker" })
+
+vim.keymap.set("n", "<Leader>fc", function()
+  -- `builtin.cli()` takes `command` as an argv table, not an interactive prompt;
+  -- prompt for one via `vim.ui.input()` (mini.input) and split it into argv ourselves.
+  vim.ui.input({ prompt = "CLI command: " }, function(input)
+    if input == nil or input == "" then
+      return
+    end
+    require("mini.pick").builtin.cli({ command = vim.split(input, "%s+") })
+  end)
+end, { desc = "Pick from CLI output" })
+
 local imap = function(lhs, rhs)
   vim.keymap.set("i", lhs, rhs, { expr = true })
 end
