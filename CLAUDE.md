@@ -36,7 +36,9 @@ numerically prefixed. This ordering is load-bearing:
 2. `plugin/10-options.lua` — core `vim.opt` settings.
 3. `plugin/20-keymaps.lua` — keymaps not owned by a specific plugin/LSP feature, plus
    `Config.leader_group_clues`, a table of `<Leader>` prefix descriptions (e.g. `<Leader>g` =
-   "+Git") consumed by whichever which-key-style plugin reads it.
+   "+Git") consumed by whichever which-key-style plugin reads it. Also defines `<Leader>ei`/`eo`/
+   `ek`/`ea`/`el`/`ep`/`em`, quick `:edit` keymaps for this config's own `init.lua` and
+   `plugin/*.lua` files (one letter per file, taken from the name after its numeric prefix).
 4. `plugin/30-autocmds.lua` — misc autocmds (currently just yank highlighting).
 5. `plugin/40-lsp.lua` — enables LSP servers, diagnostic config/toggles, and the `LspAttach`
    autocmd that wires per-buffer behavior (disabling `mini.completion`'s buffer-keyword fallback
@@ -54,7 +56,8 @@ numerically prefixed. This ordering is load-bearing:
    (wired as the `vim.notify` backend, `<Leader>on` shows history); `mini.trailspace` (default
    highlighting, `<Leader>cw` manually trims); `mini.input` (wired as the `vim.ui.input()`
    implementation); `mini.cursorword` (default configuration); `mini.files` (default configuration,
-   `-`/`<Leader>ed` toggle the explorer anchored on the current file / working directory);
+   `-`/`<Leader>ed`/`<Leader>ec` toggle the explorer anchored on the current file / working
+   directory / this Neovim config directory);
    `mini.indentscope` (default configuration, step animation disabled); `mini.statusline` (custom
    `content.active` giving diagnostics counts per-severity coloring, otherwise default content);
    `mini.pick` (default configuration, `<Leader>ff`/`fg`/`fG`/`fb`/`fh`/`fr`/`fc` cover its seven

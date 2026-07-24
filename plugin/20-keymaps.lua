@@ -67,3 +67,18 @@ end, { desc = "Folds" })
 vim.keymap.set("n", "<Leader>tl", function()
   vim.lsp.codelens.enable(not vim.lsp.codelens.is_enabled())
 end, { desc = "Code lens" })
+
+-- Quick edit access to this config's own files
+local function edit_config_file(relative_path)
+  return function()
+    vim.cmd.edit(vim.fn.stdpath("config") .. "/" .. relative_path)
+  end
+end
+
+vim.keymap.set("n", "<Leader>ei", edit_config_file("init.lua"), { desc = "Edit init.lua" })
+vim.keymap.set("n", "<Leader>eo", edit_config_file("plugin/10-options.lua"), { desc = "Edit options" })
+vim.keymap.set("n", "<Leader>ek", edit_config_file("plugin/20-keymaps.lua"), { desc = "Edit keymaps" })
+vim.keymap.set("n", "<Leader>ea", edit_config_file("plugin/30-autocmds.lua"), { desc = "Edit autocmds" })
+vim.keymap.set("n", "<Leader>el", edit_config_file("plugin/40-lsp.lua"), { desc = "Edit LSP config" })
+vim.keymap.set("n", "<Leader>ep", edit_config_file("plugin/50-plugins.lua"), { desc = "Edit plugins" })
+vim.keymap.set("n", "<Leader>em", edit_config_file("plugin/60-mini.lua"), { desc = "Edit mini configuration" })
