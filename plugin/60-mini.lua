@@ -105,6 +105,10 @@ vim.keymap.set("n", "<Leader>ed", function()
   toggle_files(vim.fn.getcwd())
 end, { desc = "Explore directory (cwd)" })
 
+vim.keymap.set("n", "<Leader>ec", function()
+  toggle_files(vim.fn.stdpath("config"))
+end, { desc = "Explore Neovim config directory" })
+
 -- See also:
 -- - `:h mini.indentscope`
 require("mini.indentscope").setup({
