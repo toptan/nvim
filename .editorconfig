@@ -17,6 +17,7 @@ auto_collapse_lines = true
 break_all_list_when_line_exceed = true
 call_arg_parentheses = always
 end_statement_with_semicolon = replace_with_newline
+indent_size = 2
 max_line_length = 80
 quote_style = double
 space_around_table_field_list = true
