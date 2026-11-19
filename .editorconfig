@@ -9,11 +9,11 @@ trim_trailing_whitespace = true
 
 [*.lua]
 align_array_table = true
-align_call_args = true
+align_call_args = false
 align_continuous_assign_statement = true
 align_continuous_rect_table_field = true
 align_function_params = true
-auto_collapse_lines = true
+auto_collapse_lines = false
 break_all_list_when_line_exceed = true
 call_arg_parentheses = always
 end_statement_with_semicolon = replace_with_newline
