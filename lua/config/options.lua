@@ -24,6 +24,15 @@ vim.opt.softtabstop = -1
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.scrolloff = 8
+-- Room for 5-digit line numbers plus the separating space.
+vim.opt.numberwidth = 6
+
+-- Search: confirm before jumping, smart case. The built-in command-line
+-- count is hidden because config.search shows its own label.
+vim.opt.incsearch = false
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.shortmess:append("S")
 
 -- Visual aids.
 vim.opt.cursorline = true
