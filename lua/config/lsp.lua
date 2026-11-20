@@ -1,7 +1,15 @@
 -- Language-server activation and <leader>lf (gersemi for CMake).
 
 -- Server (lsp/<name>.lua) per filetype.
-local servers = { lua = "lua_ls", cmake = "neocmake", }
+local servers = {
+  lua = "lua_ls",
+  cmake = "neocmake",
+  c = "clangd",
+  cpp = "clangd",
+  objc = "clangd",
+  objcpp = "clangd",
+  cuda = "clangd",
+}
 local enabled = {}
 
 -- Enable each server on the first buffer of its filetype rather than at
