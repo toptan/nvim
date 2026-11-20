@@ -77,8 +77,9 @@ database clangd uses default flags, so project headers may be reported as missin
 
 `<leader>lf` formats the whole buffer and `gq` the selected lines, both through clangd with the
 project's `.clang-format` (next to the file or in a parent directory) or clangd's fallback
-style. In completion (`<C-x><C-o>`), accepting an item with `<C-y>` also inserts a missing
-`#include` and expands function argument placeholders; `<Tab>` / `<S-Tab>` jump between them.
+style. In completion (`<C-x><C-o>`, then `<C-n>` / `<C-p>` to choose, since nothing is
+preselected), accepting an item with `<C-y>` also inserts a missing `#include` and expands
+function argument placeholders; `<Tab>` / `<S-Tab>` jump between them.
 
 clangd keeps its index in `.cache/clangd/` next to the compilation database, usually inside an
 ignored build directory; with a database linked into the project root, ignore `.cache/` there.

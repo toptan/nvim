@@ -47,6 +47,10 @@ vim.opt.listchars = {
   precedes = "‹",
 }
 
+-- Insert-mode completion: a menu even for one match, nothing selected or
+-- inserted until chosen, item details in a popup, fuzzy narrowing as you type.
+vim.opt.completeopt = { "menuone", "noselect", "popup", "fuzzy", }
+
 -- Floating windows: default border for every float that does not set its
 -- own. Plain Unicode box drawing, no Nerd Font glyphs.
 vim.opt.winborder = "rounded"
