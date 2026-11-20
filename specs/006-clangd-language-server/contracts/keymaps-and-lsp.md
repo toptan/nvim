@@ -23,6 +23,9 @@ existing "any other" row:
 - Starts only when the first C-family buffer appears, never at startup.
 - Root: nearest directory with `.clangd`, `compile_commands.json` or `compile_flags.txt`,
   otherwise the git repository, otherwise single-file mode.
+- *(Superseded by `specs/007-lsp-completion-autotrigger/contracts/keymaps-and-completion.md`:
+  completion is now automatic and has `<Tab>` / `<CR>` / `<C-Space>` keys; extra edits and
+  snippet expansion on accept are unchanged.)*
 - Completion stays on request (`<C-x><C-o>`); accepting an item with `<C-y>` also applies its
   extra edits (e.g. `#include`) and expands argument placeholders (navigated with the default
   `<Tab>`/`<S-Tab>` snippet jumps). No auto-trigger and no mappings (FR-004b).
