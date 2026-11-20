@@ -1,15 +1,23 @@
 -- Language-server activation and <leader>lf.
 
--- Enable lua_ls on the first Lua buffer rather than at startup: loading
--- vim.lsp costs a few milliseconds. vim.lsp.enable() also attaches the
--- buffer whose FileType event triggered it.
+-- Server (lsp/<name>.lua) per filetype.
+local servers = { lua = "lua_ls", cmake = "neocmake", }
+local enabled = {}
+
+-- Enable each server on the first buffer of its filetype rather than at
+-- startup: loading vim.lsp costs a few milliseconds. vim.lsp.enable() also
+-- attaches the buffer whose FileType event triggered it.
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("config_lsp", { clear = true, }),
-  pattern = "lua",
-  once = true,
-  callback = function()
+  pattern = vim.tbl_keys(servers),
+  callback = function(args)
+    local name = servers[args.match]
+    if enabled[name] then
+      return
+    end
+    enabled[name] = true
     require("config.diagnostics").setup()
-    vim.lsp.enable("lua_ls")
+    vim.lsp.enable(name)
   end,
 })
 
