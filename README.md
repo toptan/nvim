@@ -12,6 +12,10 @@
   `:checkhealth vim.lsp` reports it as missing.
 - [`gersemi`](https://github.com/BlankSpruce/gersemi) on `PATH` (`pipx install gersemi`).
   Optional: only `<leader>lf` in a CMake file needs it, and says so when it is missing.
+- [`clangd`](https://clangd.llvm.org) on `PATH` (`brew install llvm`, or the Xcode command
+  line tools). Optional, like `lua-language-server`: without it C and C++ files get no
+  language features, `<leader>lf` says no language server can format them, and
+  `:checkhealth vim.lsp` reports it as missing.
 
 ## Key mappings
 
@@ -25,7 +29,7 @@ Normal mode only; the leader key is Space.
 | `<leader>td` | Toggle all diagnostics (every buffer) |
 | `<leader>tt` | Toggle diagnostic virtual text at the end of the line (on by default) |
 | `<leader>tl` | Toggle diagnostic virtual lines below the code (off by default) |
-| `<leader>lf` | Format the buffer with its language server (follows `.editorconfig`), or with gersemi for CMake |
+| `<leader>lf` | Format the buffer with its language server (Lua follows `.editorconfig`, C and C++ follow `.clang-format`), or with gersemi for CMake |
 
 The counter stays until highlights are cleared, the buffer is edited, or another buffer
 is shown. In terminals `<Tab>` and `<C-i>` are the same key, so jump-forward (`<C-i>`) is
@@ -52,3 +56,30 @@ otherwise it works on the single file. Its formatter is switched off: `<leader>l
 CMake with gersemi, using the project's `.gersemirc` (next to the file or in a parent
 directory) or gersemi's defaults, and `gq` does plain text formatting. Restart the server
 with `:lsp restart` after changing the CMake build.
+
+## C and C++
+
+`clangd` starts when the first C, C++, Objective-C or CUDA file (sources and headers) is
+opened. Its root is the nearest directory with a `.clangd`, `compile_commands.json` or
+`compile_flags.txt`, otherwise the git repository; otherwise it works on the single file.
+
+clangd finds `compile_commands.json` next to the file, in a parent directory, or in a
+`build/` directory at any of those levels. For another build directory, either add a
+`.clangd` file to the project root:
+
+```yaml
+CompileFlags:
+  CompilationDatabase: build-debug
+```
+
+or link the database into the root (`ln -s build-debug/compile_commands.json .`). Without a
+database clangd uses default flags, so project headers may be reported as missing.
+
+`<leader>lf` formats the whole buffer and `gq` the selected lines, both through clangd with the
+project's `.clang-format` (next to the file or in a parent directory) or clangd's fallback
+style. In completion (`<C-x><C-o>`), accepting an item with `<C-y>` also inserts a missing
+`#include` and expands function argument placeholders; `<Tab>` / `<S-Tab>` jump between them.
+
+clangd keeps its index in `.cache/clangd/` next to the compilation database, usually inside an
+ignored build directory; with a database linked into the project root, ignore `.cache/` there.
+Restart the server with `:lsp restart` after regenerating the database.
