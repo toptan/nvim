@@ -1,4 +1,4 @@
--- Language-server activation and <leader>lf.
+-- Language-server activation and <leader>lf (gersemi for CMake).
 
 -- Server (lsp/<name>.lua) per filetype.
 local servers = { lua = "lua_ls", cmake = "neocmake", }
@@ -24,6 +24,11 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.keymap.set("n", "<leader>lf", function()
   if vim.bo.readonly or not vim.bo.modifiable then
     vim.notify("Buffer is read-only", vim.log.levels.WARN)
+    return
+  end
+  -- CMake is formatted by gersemi only; neocmakelsp's formatter is disabled.
+  if vim.bo.filetype == "cmake" then
+    require("config.gersemi").format(0)
     return
   end
   local clients = vim.lsp.get_clients({
