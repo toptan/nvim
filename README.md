@@ -35,6 +35,24 @@ The counter stays until highlights are cleared, the buffer is edited, or another
 is shown. In terminals `<Tab>` and `<C-i>` are the same key, so jump-forward (`<C-i>`) is
 not available; `<C-o>` (jump back) still works.
 
+## Completion
+
+In a buffer with a language server, a completion menu opens by itself while you type a word
+or after a character such as `.`, `->` or `::`. It lists the server's suggestions first, then
+matching words from open buffers, and narrows as you type. Nothing is selected or inserted
+until you choose. Buffers without a language server keep Neovim's usual manual completion.
+
+| Key (insert mode) | Action |
+|-----|--------|
+| `<Tab>` / `<S-Tab>` | Menu open: next / previous item, without inserting it. Otherwise: jump between snippet placeholders, or a plain Tab |
+| `<CR>` | Menu open with an item selected: accept it. Otherwise: new line |
+| `<C-Space>` | Open the menu (`<C-@>` too, which is what most terminals send) |
+
+Neovim's own keys still work: `<C-y>` accepts, `<C-e>` closes the menu and restores what you
+typed, `<Up>` / `<Down>` move like `<Tab>` / `<S-Tab>`. `<C-n>` / `<C-p>` move as well but,
+as always in Neovim, put the item into the text while you move. `<C-@>` no longer inserts
+the previously typed text.
+
 ## Popups
 
 Floating windows (diagnostics via `<C-w>d`, hover, signature help) have a rounded border in
@@ -77,9 +95,9 @@ database clangd uses default flags, so project headers may be reported as missin
 
 `<leader>lf` formats the whole buffer and `gq` the selected lines, both through clangd with the
 project's `.clang-format` (next to the file or in a parent directory) or clangd's fallback
-style. In completion (`<C-x><C-o>`, then `<C-n>` / `<C-p>` to choose, since nothing is
-preselected), accepting an item with `<C-y>` also inserts a missing `#include` and expands
-function argument placeholders; `<Tab>` / `<S-Tab>` jump between them.
+style. In completion, accepting an item (`<CR>` or `<C-y>`) also inserts a missing
+`#include` and expands function argument placeholders; with the menu closed, `<Tab>` /
+`<S-Tab>` jump between them.
 
 clangd keeps its index in `.cache/clangd/` next to the compilation database, usually inside an
 ignored build directory; with a database linked into the project root, ignore `.cache/` there.
