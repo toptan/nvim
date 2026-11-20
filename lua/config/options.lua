@@ -46,3 +46,7 @@ vim.opt.listchars = {
   extends = "›",
   precedes = "‹",
 }
+
+-- Floating windows: default border for every float that does not set its
+-- own. Plain Unicode box drawing, no Nerd Font glyphs.
+vim.opt.winborder = "rounded"

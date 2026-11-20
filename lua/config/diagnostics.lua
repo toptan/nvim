@@ -1,4 +1,5 @@
--- Diagnostic display (virtual text / virtual lines) and the three toggles.
+-- Diagnostic display (virtual text / virtual lines / popup style) and the
+-- three toggles.
 
 local M = {}
 
@@ -11,7 +12,12 @@ function M.setup()
     return
   end
   did_setup = true
-  vim.diagnostic.config({ virtual_text = true, virtual_lines = false, })
+  -- The popup's title replaces the default "Diagnostics:" header line.
+  vim.diagnostic.config({
+    virtual_text = true,
+    virtual_lines = false,
+    float = { title = " Diagnostics ", header = "", source = true, },
+  })
 end
 
 -- Diagnostics from any source, not only lua_ls, get the initial display.

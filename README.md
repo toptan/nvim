@@ -25,6 +25,12 @@ The counter stays until highlights are cleared, the buffer is edited, or another
 is shown. In terminals `<Tab>` and `<C-i>` are the same key, so jump-forward (`<C-i>`) is
 not available; `<C-o>` (jump back) still works.
 
+## Popups
+
+Floating windows (diagnostics via `<C-w>d`, hover, signature help) have a rounded border in
+the colour scheme's title colour. The diagnostic popup is titled and names the source of
+each entry.
+
 ## Lua language server
 
 `lua_ls` starts when the first Lua file is opened. In this config, and in any Lua project
