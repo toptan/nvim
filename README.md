@@ -59,6 +59,21 @@ Floating windows (diagnostics via `<C-w>d`, hover, signature help) have a rounde
 the colour scheme's title colour. The diagnostic popup is titled and names the source of
 each entry.
 
+## Notifications
+
+Notifications (for example `Diagnostics: off` from `<leader>td`, or anything sent with
+`vim.notify`) appear in a popup titled "Notifications" in the top right corner, with the same
+border as other popups. It never takes focus. It shows at most three notifications, newest
+last, each coloured by level (error, warning, info); a fourth pushes out the oldest.
+
+Each notification disappears 3 seconds after it appeared, and the popup closes with the last
+one. To change the delay, edit `TIMEOUT_MS` at the top of `lua/config/notifications.lua` and
+restart Neovim.
+
+`:messages` keeps every notification; long ones are split over several lines there. Recording
+a notification clears whatever message is on the command line at that moment (it stays in
+`:messages`).
+
 ## Lua language server
 
 `lua_ls` starts when the first Lua file is opened. In this config, and in any Lua project
