@@ -26,6 +26,10 @@ Installed automatically by `vim.pack`; everything else is built into Neovim.
 - [`mini.notify`](https://github.com/nvim-mini/mini.notify): Neovim has no notification
   popup. Without network on the first start the install fails with a notice, and
   notifications appear on the command line as in stock Neovim until the next start.
+- [`mini.completion`](https://github.com/nvim-mini/mini.completion): Neovim's built-in
+  automatic completion cannot merge language server and buffer suggestions without a lot of
+  custom code. Installed the first time you enter insert mode; without network the install
+  fails with a notice, and Neovim's manual completion keys (`<C-n>`, `<C-x><C-o>`) remain.
 
 ## Key mappings
 
@@ -47,16 +51,24 @@ not available; `<C-o>` (jump back) still works.
 
 ## Completion
 
-In a buffer with a language server, a completion menu opens by itself while you type a word
-or after a character such as `.`, `->` or `::`. It lists the server's suggestions first, then
-matching words from open buffers, and narrows as you type. Nothing is selected or inserted
-until you choose. Buffers without a language server keep Neovim's usual manual completion.
+Completion is provided by [`mini.completion`](https://github.com/nvim-mini/mini.completion)
+with its default settings, loaded the first time you enter insert mode. In every buffer a
+completion menu opens by itself shortly after you pause while typing a word, and at once after
+a language server's trigger character such as `.`, `->` or `::`. It lists the server's
+suggestions; when the server has none, or the buffer has no server, it lists matching words
+from open buffers instead. The menu narrows as you type. Nothing is selected or inserted until
+you choose; snippet items are marked `S` and expand with jumpable placeholders.
+
+A window titled "Info" shows the documentation of the highlighted item, and inside a
+function call's arguments a window titled "Signature" shows its parameters.
 
 | Key (insert mode) | Action |
 |-----|--------|
 | `<Tab>` / `<S-Tab>` | Menu open: next / previous item, without inserting it. Otherwise: jump between snippet placeholders, or a plain Tab |
 | `<CR>` | Menu open with an item selected: accept it. Otherwise: new line |
 | `<C-Space>` | Open the menu (`<C-@>` too, which is what most terminals send) |
+| `<A-Space>` | Open the menu with words from open buffers only |
+| `<C-f>` / `<C-b>` | Scroll the Info or Signature window |
 
 Neovim's own keys still work: `<C-y>` accepts, `<C-e>` closes the menu and restores what you
 typed, `<Up>` / `<Down>` move like `<Tab>` / `<S-Tab>`. `<C-n>` / `<C-p>` move as well but,
@@ -65,8 +77,8 @@ the previously typed text.
 
 ## Popups
 
-Floating windows (diagnostics via `<C-w>d`, hover, signature help) have a rounded border in
-the colour scheme's title colour. The diagnostic popup is titled and names the source of
+Floating windows (diagnostics via `<C-w>d`, hover, signature help, and the completion Info
+and Signature windows) have a rounded border in the colour scheme's title colour. The diagnostic popup is titled and names the source of
 each entry.
 
 ## Notifications
