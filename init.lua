@@ -1,6 +1,6 @@
 -- Options must load first: they set the leader keys and provider flags.
 require("config.options")
--- Before any module that notifies, so every notification reaches the popup.
+-- Before any module that notifies, so every notification reaches mini.notify.
 require("config.notifications")
 require("config.colorscheme")
 require("config.search")
