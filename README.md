@@ -16,6 +16,16 @@
   line tools). Optional, like `lua-language-server`: without it C and C++ files get no
   language features, `<leader>lf` says no language server can format them, and
   `:checkhealth vim.lsp` reports it as missing.
+- `git` on `PATH`: Neovim's built-in plugin manager (`vim.pack`) uses it to install plugins
+  on the first start, without a prompt.
+
+### Plugins
+
+Installed automatically by `vim.pack`; everything else is built into Neovim.
+
+- [`mini.notify`](https://github.com/nvim-mini/mini.notify): Neovim has no notification
+  popup. Without network on the first start the install fails with a notice, and
+  notifications appear on the command line as in stock Neovim until the next start.
 
 ## Key mappings
 
@@ -62,17 +72,17 @@ each entry.
 ## Notifications
 
 Notifications (for example `Diagnostics: off` from `<leader>td`, or anything sent with
-`vim.notify`) appear in a popup titled "Notifications" in the top right corner, with the same
-border as other popups. It never takes focus. It shows at most three notifications, newest
-last, each coloured by level (error, warning, info); a fourth pushes out the oldest.
+`vim.notify`) are shown by [`mini.notify`](https://github.com/nvim-mini/mini.notify) with its
+default settings: a popup titled "Notifications" in the top right corner, with the same
+border as other popups. It never takes focus. Each notification is prefixed with its time, coloured by level
+(error, warning, info), and listed newest first.
 
-Each notification disappears 3 seconds after it appeared, and the popup closes with the last
-one. To change the delay, edit `TIMEOUT_MS` at the top of `lua/config/notifications.lua` and
-restart Neovim.
+Each notification disappears 5 seconds after it appeared, and the popup closes with the last
+one. Debug and trace notifications are ignored. Language server progress (for example while
+`lua_ls` loads a workspace) is shown there too.
 
-`:messages` keeps every notification; long ones are split over several lines there. Recording
-a notification clears whatever message is on the command line at that moment (it stays in
-`:messages`).
+Notifications are not kept in `:messages`. To see this session's notifications, run
+`:lua MiniNotify.show_history()`.
 
 ## Lua language server
 
