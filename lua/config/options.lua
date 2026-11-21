@@ -48,8 +48,11 @@ vim.opt.listchars = {
 }
 
 -- Insert-mode completion: a menu even for one match, nothing selected or
--- inserted until chosen, item details in a popup, fuzzy narrowing as you type.
-vim.opt.completeopt = { "menuone", "noselect", "popup", "fuzzy", }
+-- inserted until chosen, fuzzy narrowing as you type. Item details come from
+-- mini.completion's info window; "popup" would open a second one beside it.
+vim.opt.completeopt = { "menuone", "noselect", "fuzzy", }
+-- No "match 1 of 2" / "Pattern not found" messages from completion.
+vim.opt.shortmess:append("c")
 
 -- Floating windows: default border for every float that does not set its
 -- own. Plain Unicode box drawing, no Nerd Font glyphs.
