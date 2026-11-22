@@ -30,6 +30,9 @@ Installed automatically by `vim.pack`; everything else is built into Neovim.
   automatic completion cannot merge language server and buffer suggestions without a lot of
   custom code. Installed the first time you enter insert mode; without network the install
   fails with a notice, and Neovim's manual completion keys (`<C-n>`, `<C-x><C-o>`) remain.
+- [`mini.clue`](https://github.com/nvim-mini/mini.clue): Neovim cannot show which keys may
+  follow a partially typed key sequence. Without network on the first start the install
+  fails with a notice, and keys work as in stock Neovim, without clues.
 
 ## Key mappings
 
@@ -48,6 +51,31 @@ Normal mode only; the leader key is Space.
 The counter stays until highlights are cleared, the buffer is edited, or another buffer
 is shown. In terminals `<Tab>` and `<C-i>` are the same key, so jump-forward (`<C-i>`) is
 not available; `<C-o>` (jump back) still works.
+
+## Key clues
+
+[`mini.clue`](https://github.com/nvim-mini/mini.clue) shows the keys that may follow, with
+the triggers and clues of its config quick start. After you press a trigger key and pause for
+a second, a window in the bottom right corner lists every key that can come next and what it
+does, including your own mappings with their descriptions. Typing a sequence quickly never
+shows the window, and every sequence does exactly what it does without the plugin.
+
+| Trigger | Modes | Lists |
+|---------|-------|-------|
+| `<leader>` | Normal, Visual | Your leader mappings; groups `l` Language and `t` Toggle |
+| `[` / `]` | Normal | Bracket motions (`]d`, `[q` …) |
+| `g` | Normal, Visual | `g` commands, including language server ones (`gr…`) |
+| `z` | Normal, Visual | Fold, scroll and spelling commands |
+| `'` / `` ` `` | Normal, Visual | Marks and where they are |
+| `"` | Normal, Visual | Registers and their contents |
+| `<C-w>` | Normal | Window commands |
+| `<C-x>` | Insert | Built-in completion modes |
+| `<C-r>` | Insert, Command-line | Registers and their contents |
+
+In the window, a listed key runs its command or opens the next level, `<BS>` goes back one
+key, `<Esc>` cancels, and `<C-d>` / `<C-u>` scroll a long list. Clues are off while a macro
+is being recorded. The leader groups exist in Visual mode too, but have no mappings there yet,
+so `<leader>l` in Visual mode just runs as plain keys.
 
 ## Completion
 
