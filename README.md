@@ -18,6 +18,11 @@
   `:checkhealth vim.lsp` reports it as missing.
 - `git` on `PATH`: Neovim's built-in plugin manager (`vim.pack`) uses it to install plugins
   on the first start, without a prompt.
+- For tree-sitter parsers: the
+  [`tree-sitter`](https://github.com/tree-sitter/tree-sitter/blob/master/crates/cli/README.md)
+  CLI 0.26.1 or newer (`brew install tree-sitter-cli`, not the npm package), a C compiler,
+  `curl` and `tar`. Without them the editor works as before, and opening the first
+  supported file shows one warning naming what is missing.
 
 ### Plugins
 
@@ -33,6 +38,11 @@ Installed automatically by `vim.pack`; everything else is built into Neovim.
 - [`mini.clue`](https://github.com/nvim-mini/mini.clue): Neovim cannot show which keys may
   follow a partially typed key sequence. Without network on the first start the install
   fails with a notice, and keys work as in stock Neovim, without clues.
+- [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter): Neovim has no
+  parser installer or updater, ships few parsers and queries, and has no tree-sitter
+  indentation. See [Tree-sitter](#tree-sitter).
+- [`nvim-treesitter-textobjects`](https://github.com/nvim-treesitter/nvim-treesitter-textobjects):
+  Neovim has no syntax-aware text objects or function/class jumps.
 
 ## Key mappings
 
@@ -47,6 +57,17 @@ Normal mode only; the leader key is Space.
 | `<leader>tt` | Toggle diagnostic virtual text at the end of the line (on by default) |
 | `<leader>tl` | Toggle diagnostic virtual lines below the code (off by default) |
 | `<leader>lf` | Format the buffer with its language server (Lua follows `.editorconfig`, C and C++ follow `.clang-format`), or with gersemi for CMake |
+
+Tree-sitter text objects and jumps (only in buffers whose language has them, see
+[Tree-sitter](#tree-sitter)):
+
+| Key | Modes | Action |
+|-----|-------|--------|
+| `af` / `if` | visual, operator-pending | Around / inside function |
+| `ac` / `ic` | visual, operator-pending | Around / inside class |
+| `aa` / `ia` | visual, operator-pending | Around / inside parameter |
+| `]f` / `[f` | normal, visual, operator-pending | Start of next / previous function (count, jump list) |
+| `]c` / `[c` | normal, visual, operator-pending | Start of next / previous class; in diff mode the built-in next / previous change |
 
 The counter stays until highlights are cleared, the buffer is edited, or another buffer
 is shown. In terminals `<Tab>` and `<C-i>` are the same key, so jump-forward (`<C-i>`) is
@@ -167,3 +188,26 @@ style. In completion, accepting an item (`<CR>` or `<C-y>`) also inserts a missi
 clangd keeps its index in `.cache/clangd/` next to the compilation database, usually inside an
 ignored build directory; with a database linked into the project root, ignore `.cache/` there.
 Restart the server with `:lsp restart` after regenerating the database.
+
+## Tree-sitter
+
+[`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter) (parsers, queries,
+indentation) and
+[`nvim-treesitter-textobjects`](https://github.com/nvim-treesitter/nvim-treesitter-textobjects)
+are installed by `vim.pack` on the first start, but loaded only when the first file of a
+supported language is opened. Languages: asm, C, C++, CMake, EditorConfig, Lua, Markdown
+(with inline Markdown), Python, Vim script and Neovim help; regular expressions are
+highlighted where these languages embed them.
+
+- **Parsers** for these languages are installed in the background when the first supported
+  file is opened; that file switches to tree-sitter by itself once its parser is ready.
+  Whenever `vim.pack` installs or updates either plugin, the parsers are updated once (at
+  the latest when the next supported file is opened).
+- **Features**: tree-sitter highlighting everywhere; folding (files open unfolded) except
+  for asm and help; indentation except for asm, EditorConfig, Vim script and help, which
+  keep Neovim's own. Other languages are unchanged.
+- **Text objects and jumps** (see [Key mappings](#key-mappings)) exist in C, C++, CMake,
+  Lua, Markdown (class = section), Python and Vim script; where a language has no such
+  construct the key does nothing.
+- `:TSInstall`, `:TSUpdate` and `:checkhealth nvim-treesitter` are available only after a
+  supported file has been opened in the session.
