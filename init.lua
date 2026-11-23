@@ -9,5 +9,6 @@ require("config.autocmds")
 require("config.diagnostics")
 require("config.lsp")
 require("config.completion")
+require("config.treesitter")
 -- Order does not matter: mini.clue reads mappings when a trigger is pressed.
 require("config.clue")
