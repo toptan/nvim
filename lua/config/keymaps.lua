@@ -51,3 +51,50 @@ vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window", })
 -- is honoured (3>). Selection columns are kept, not the selected characters.
 vim.keymap.set("x", ">", ">gv", { desc = "Indent selection", })
 vim.keymap.set("x", "<", "<gv", { desc = "Dedent selection", })
+
+-- Move the current line (Normal) or the selected lines (Visual) down
+-- (dir = 1) or up (dir = -1) by [count] lines, stopping at the buffer edge.
+-- :move keeps indentation and registers and is one undo step. In Visual mode
+-- the moved lines are reselected in the same visual mode.
+local function move_lines(dir)
+  local count = vim.v.count1
+  local visual = vim.fn.mode():match("^[vV\22]") ~= nil
+  local top, bottom = vim.fn.line("."), vim.fn.line(".")
+  if visual then
+    top, bottom = vim.fn.line("v"), vim.fn.line(".")
+    if top > bottom then
+      top, bottom = bottom, top
+    end
+    vim.cmd("normal! \27")
+  end
+  local target
+  if dir > 0 and bottom < vim.fn.line("$") then
+    target = math.min(vim.fn.line("$"), bottom + count)
+  elseif dir < 0 and top > 1 then
+    target = math.max(0, top - count - 1)
+  end
+  if target then
+    vim.cmd(("silent keepjumps %d,%dmove %d"):format(top, bottom, target))
+  end
+  if visual then
+    vim.cmd("normal! gv")
+  end
+end
+
+-- ∆ and ˚ are what Option+j / Option+k type on the macOS US layout when the
+-- terminal does not send Option as Meta. They are not mapped in Insert mode,
+-- so they can still be typed as text.
+local move_keys = {
+  { "<M-j>", 1, }, { "∆", 1, },
+  { "<M-k>", -1, }, { "˚", -1, },
+}
+for _, key in ipairs(move_keys) do
+  local lhs, dir = key[1], key[2]
+  local where = dir > 0 and "down" or "up"
+  vim.keymap.set("x", lhs, function()
+    move_lines(dir)
+  end, { desc = "Move selection " .. where, })
+  vim.keymap.set("n", lhs, function()
+    move_lines(dir)
+  end, { desc = "Move line " .. where, })
+end
