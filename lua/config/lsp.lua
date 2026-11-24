@@ -51,5 +51,17 @@ vim.keymap.set("n", "<leader>lf", function()
   end
   -- Synchronous: edits typed meanwhile cannot race with the result, and the
   -- whole change is a single undo step.
+  local before = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  local seq = vim.fn.undotree().seq_cur
   vim.lsp.buf.format({ bufnr = 0, async = false, timeout_ms = 3000, })
+  -- Some servers (bashls) resend the whole buffer even when it is already
+  -- formatted. Undo such a no-op edit, but only when it is an undo step of
+  -- its own, so the buffer keeps its 'modified' state and history.
+  local after = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  local new_step = vim.fn.undotree().seq_cur ~= seq
+  if new_step and vim.deep_equal(before, after) then
+    local view = vim.fn.winsaveview()
+    vim.cmd("silent undo")
+    vim.fn.winrestview(view)
+  end
 end, { desc = "Format buffer", })
