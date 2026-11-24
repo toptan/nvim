@@ -72,6 +72,17 @@ Tree-sitter text objects and jumps (only in buffers whose language has them, see
 | `]f` / `[f` | normal, visual, operator-pending | Start of next / previous function (count, jump list) |
 | `]c` / `[c` | normal, visual, operator-pending | Start of next / previous class; in diff mode the built-in next / previous change |
 
+Indenting and moving lines:
+
+| Key | Modes | Action |
+|-----|-------|--------|
+| `>` / `<` | visual | Indent / dedent the selection and keep it selected, so the key can be repeated (count supported) |
+| `<M-j>` / `<M-k>` | normal, visual | Move the line or the selected lines down / up (count supported); the selection stays selected, indentation is kept, and nothing happens at the top or bottom of the buffer |
+
+On macOS, if the terminal does not send Option as Meta, Option+j / Option+k type `∆` / `˚`;
+these characters are mapped like `<M-j>` / `<M-k>` in normal and visual mode (not in insert
+mode, so they can still be typed).
+
 `<C-l>` no longer clears and redraws the screen; use `:redraw!` for that.
 
 The counter stays until highlights are cleared, the buffer is edited, or another buffer
