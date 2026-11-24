@@ -11,6 +11,7 @@ local M = {}
 -- Parsers to install: the single source of truth for this feature.
 local LANGUAGES = {
   "asm",
+  "bash",
   "c",
   "cmake",
   "cpp",
@@ -27,6 +28,8 @@ local LANGUAGES = {
 -- Filetype -> parser. markdown_inline and regex are injection-only.
 local FILETYPES = {
   asm = "asm",
+  bash = "bash",
+  sh = "bash",
   c = "c",
   cmake = "cmake",
   cpp = "cpp",
