@@ -57,6 +57,8 @@ Normal mode only; the leader key is Space.
 | `<leader>tt` | Toggle diagnostic virtual text at the end of the line (on by default) |
 | `<leader>tl` | Toggle diagnostic virtual lines below the code (off by default) |
 | `<leader>lf` | Format the buffer with its language server (Lua follows `.editorconfig`, C and C++ follow `.clang-format`), or with gersemi for CMake |
+| `<leader>ld` | List the buffer's diagnostics in the location list (see [Diagnostics list](#diagnostics-list)) |
+| `<leader>lD` | List the workspace's diagnostics in the location list |
 
 Tree-sitter text objects and jumps (only in buffers whose language has them, see
 [Tree-sitter](#tree-sitter)):
@@ -123,6 +125,27 @@ Neovim's own keys still work: `<C-y>` accepts, `<C-e>` closes the menu and resto
 typed, `<Up>` / `<Down>` move like `<Tab>` / `<S-Tab>`. `<C-n>` / `<C-p>` move as well but,
 as always in Neovim, put the item into the text while you move. `<C-@>` no longer inserts
 the previously typed text.
+
+## Diagnostics list
+
+`<leader>ld` lists the current buffer's diagnostics and `<leader>lD` every diagnostic the
+editor holds for any file, in the location list of the current window. The list opens
+below the window and takes the cursor. Entries are ordered by severity (errors, warnings,
+info, hints), then by file, line and column. Each entry's severity and message are shown
+in that severity's diagnostic colour; file name and line/column keep the list's usual
+colours. Diagnostics turned off with `<leader>td` are not listed, and when there is
+nothing to list a notification says so instead of opening an empty list.
+
+In any location list window, `<CR>` jumps to the entry and moves the cursor to the file
+(the list stays open, so `<C-w>j` goes back to it) and `<Esc>` closes the list and returns
+to the file. Quickfix windows keep the usual `<Esc>`. Pressing either key again refreshes
+the list in the same window; an unrelated location list (for example from `:lvimgrep`)
+stays reachable with `:lolder`. The list is a snapshot and does not update by itself.
+
+`<leader>lD` first asks the buffer's language servers that support it to check the whole
+project, waiting at most 2 seconds. Neither configured server needs this: `lua_ls`
+reports problems in unopened files of its workspace on its own shortly after the first
+Lua file is opened, and `clangd` only reports files that are open.
 
 ## Popups
 
