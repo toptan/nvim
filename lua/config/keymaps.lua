@@ -38,3 +38,11 @@ end, { desc = "Next buffer", })
 vim.keymap.set("n", "<S-Tab>", function()
   cycle(-1)
 end, { desc = "Previous buffer", })
+
+-- One-key window moves in Normal mode, the same as <C-w>h/j/k/l (which
+-- still work, and take a count). <C-l> no longer clears and redraws the
+-- screen: use :redraw! instead. Other modes keep their meanings.
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to left window", })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window", })
