@@ -86,6 +86,8 @@ local severities = {
   { label = "info",    type = "I", hl = "DiagnosticInfo", },
   { label = "hint",    type = "N", hl = "DiagnosticHint", },
 }
+-- Labels are padded to the longest one ("warning") so messages line up.
+local LABEL_WIDTH = 7
 
 -- The file window: the current one, or the owner of the location list the
 -- cursor is in.
@@ -105,7 +107,10 @@ local function file_name(bufnr)
 end
 
 -- Quickfix items and the matching list record, sorted by severity, file,
--- line and column. Diagnostics that are turned off are left out.
+-- line and column. Diagnostics that are turned off are left out. Each
+-- display line is "<location><pad> <label><pad>| <message>": locations are
+-- padded to the widest one in the list (by screen width) so labels share a
+-- column, and labels to LABEL_WIDTH so messages share a column.
 local function build(diagnostics)
   local entries = {}
   for _, d in ipairs(diagnostics) do
@@ -124,19 +129,26 @@ local function build(diagnostics)
     return a.d.col < b.d.col
   end)
 
+  local loc_width = 0
+  for _, e in ipairs(entries) do
+    e.loc = ("%s|%d col %d"):format(e.file, e.d.lnum + 1, e.d.col + 1)
+    e.loc_width = vim.fn.strdisplaywidth(e.loc)
+    loc_width = math.max(loc_width, e.loc_width)
+  end
+
   local items, record = {}, { lines = {}, hl = {}, }
   for i, e in ipairs(entries) do
     local d = e.d
     local sev = severities[d.severity] or severities[1]
     local message = d.message:gsub("\r?\n", " ")
-    local prefix = ("%s|%d col %d "):format(e.file, d.lnum + 1, d.col + 1)
-    local label_end = #prefix + #sev.label
-    local line = prefix .. sev.label .. "| " .. message
+    local prefix = e.loc .. (" "):rep(loc_width - e.loc_width + 1)
+    local label = sev.label .. (" "):rep(LABEL_WIDTH - #sev.label)
+    local line = prefix .. label .. "| " .. message
     record.lines[i] = line
     record.hl[i] = {
       group = sev.hl,
-      label = { #prefix, label_end, },
-      msg = { label_end + 2, #line, },
+      label = { #prefix, #prefix + #sev.label, },
+      msg = { #prefix + LABEL_WIDTH + 2, #line, },
     }
     items[i] = {
       bufnr = d.bufnr,
