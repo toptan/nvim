@@ -16,6 +16,14 @@
   line tools). Optional, like `lua-language-server`: without it C and C++ files get no
   language features, `<leader>lf` says no language server can format them, and
   `:checkhealth vim.lsp` reports it as missing.
+- [`bash-language-server`](https://github.com/bash-lsp/bash-language-server) on `PATH`
+  (`brew install bash-language-server`). Optional, like `lua-language-server`: without it
+  shell scripts get no language features, `<leader>lf` says no language server can format
+  them, and `:checkhealth vim.lsp` reports it as missing.
+- [`shellcheck`](https://www.shellcheck.net) on `PATH` (`brew install shellcheck`).
+  Optional: without it shell scripts get no diagnostics; everything else still works.
+- [`shfmt`](https://github.com/mvdan/sh) on `PATH` (`brew install shfmt`). Optional:
+  without it `<leader>lf` in a shell script says no language server can format it.
 - `git` on `PATH`: Neovim's built-in plugin manager (`vim.pack`) uses it to install plugins
   on the first start, without a prompt.
 - For tree-sitter parsers: the
@@ -57,7 +65,7 @@ Normal mode only; the leader key is Space.
 | `<leader>td` | Toggle all diagnostics (every buffer) |
 | `<leader>tt` | Toggle diagnostic virtual text at the end of the line (on by default) |
 | `<leader>tl` | Toggle diagnostic virtual lines below the code (off by default) |
-| `<leader>lf` | Format the buffer with its language server (Lua follows `.editorconfig`, C and C++ follow `.clang-format`), or with gersemi for CMake |
+| `<leader>lf` | Format the buffer with its language server (Lua and shell scripts follow `.editorconfig`, C and C++ follow `.clang-format`), or with gersemi for CMake |
 | `<leader>ld` | List the buffer's diagnostics in the location list (see [Diagnostics list](#diagnostics-list)) |
 | `<leader>lD` | List the workspace's diagnostics in the location list |
 
@@ -165,9 +173,9 @@ the list in the same window; an unrelated location list (for example from `:lvim
 stays reachable with `:lolder`. The list is a snapshot and does not update by itself.
 
 `<leader>lD` first asks the buffer's language servers that support it to check the whole
-project, waiting at most 2 seconds. Neither configured server needs this: `lua_ls`
+project, waiting at most 2 seconds. None of the configured servers needs this: `lua_ls`
 reports problems in unopened files of its workspace on its own shortly after the first
-Lua file is opened, and `clangd` only reports files that are open.
+Lua file is opened, and `clangd` and `bashls` only report files that are open.
 
 ## Popups
 
@@ -234,6 +242,20 @@ clangd keeps its index in `.cache/clangd/` next to the compilation database, usu
 ignored build directory; with a database linked into the project root, ignore `.cache/` there.
 Restart the server with `:lsp restart` after regenerating the database.
 
+## Shell scripts
+
+`bash-language-server` starts when the first shell script is opened: `.sh` and `.bash`
+files, `.bashrc` and similar, and files without an extension whose first line is a `bash`
+or `sh` shebang. zsh and other shells are not covered. Its root is the git repository, so
+go-to-definition follows `source`d files anywhere in the project; otherwise it works on the
+single file.
+
+With `shellcheck` installed, its findings are shown as diagnostics, and `gra` offers its
+fixes. `<leader>lf` formats the whole buffer with `shfmt`; the indentation comes from the
+project's `.editorconfig`, otherwise 4 spaces, and shfmt-specific `.editorconfig` keys such
+as `switch_case_indent` are honoured. Formatting an already formatted script leaves the
+buffer unmodified. `gq` does plain text formatting.
+
 ## Tree-sitter
 
 [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter) (parsers, queries,
@@ -241,7 +263,7 @@ indentation) and
 [`nvim-treesitter-textobjects`](https://github.com/nvim-treesitter/nvim-treesitter-textobjects)
 are installed by `vim.pack` on the first start, but loaded only when the first file of a
 supported language is opened. Languages: asm, C, C++, CMake, EditorConfig, Lua, Markdown
-(with inline Markdown), Python, Vim script and Neovim help; regular expressions are
+(with inline Markdown), Python, shell scripts (sh/bash), Vim script and Neovim help; regular expressions are
 highlighted where these languages embed them.
 
 - **Parsers** for these languages are installed in the background when the first supported
@@ -252,7 +274,7 @@ highlighted where these languages embed them.
   for asm and help; indentation except for asm, EditorConfig, Vim script and help, which
   keep Neovim's own. Other languages are unchanged.
 - **Text objects and jumps** (see [Key mappings](#key-mappings)) exist in C, C++, CMake,
-  Lua, Markdown (class = section), Python and Vim script; where a language has no such
-  construct the key does nothing.
+  Lua, Markdown (class = section), Python, shell scripts (functions only) and Vim script;
+  where a language has no such construct the key does nothing.
 - `:TSInstall`, `:TSUpdate` and `:checkhealth nvim-treesitter` are available only after a
   supported file has been opened in the session.
