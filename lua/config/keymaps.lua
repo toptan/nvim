@@ -46,3 +46,8 @@ vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to left window", })
 vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window", })
+
+-- Visual-mode indent keeps the selection, so > and < can be repeated. A count
+-- is honoured (3>). Selection columns are kept, not the selected characters.
+vim.keymap.set("x", ">", ">gv", { desc = "Indent selection", })
+vim.keymap.set("x", "<", "<gv", { desc = "Dedent selection", })
