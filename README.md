@@ -52,6 +52,7 @@ Normal mode only; the leader key is Space.
 |-----|--------|
 | `<Esc>` | Clear search highlights and the match counter |
 | `<Tab>` / `<S-Tab>` | Next / previous file buffer (open order, wraps; skips help, quickfix and terminal buffers) |
+| `<C-h>` / `<C-j>` / `<C-k>` / `<C-l>` | Go to the window left / below / above / right (same as `<C-w>h/j/k/l`, which still work; Normal mode only) |
 | `n` `N` `*` `#` `g*` `g#` | Native search jumps, plus a `[current/total]` counter right-aligned on the match's line |
 | `<leader>td` | Toggle all diagnostics (every buffer) |
 | `<leader>tt` | Toggle diagnostic virtual text at the end of the line (on by default) |
@@ -70,6 +71,8 @@ Tree-sitter text objects and jumps (only in buffers whose language has them, see
 | `aa` / `ia` | visual, operator-pending | Around / inside parameter |
 | `]f` / `[f` | normal, visual, operator-pending | Start of next / previous function (count, jump list) |
 | `]c` / `[c` | normal, visual, operator-pending | Start of next / previous class; in diff mode the built-in next / previous change |
+
+`<C-l>` no longer clears and redraws the screen; use `:redraw!` for that.
 
 The counter stays until highlights are cleared, the buffer is edited, or another buffer
 is shown. In terminals `<Tab>` and `<C-i>` are the same key, so jump-forward (`<C-i>`) is
@@ -131,13 +134,21 @@ the previously typed text.
 `<leader>ld` lists the current buffer's diagnostics and `<leader>lD` every diagnostic the
 editor holds for any file, in the location list of the current window. The list opens
 below the window and takes the cursor. Entries are ordered by severity (errors, warnings,
-info, hints), then by file, line and column. Each entry's severity and message are shown
-in that severity's diagnostic colour; file name and line/column keep the list's usual
-colours. Diagnostics turned off with `<leader>td` are not listed, and when there is
+info, hints), then by file, line and column. The entries read as a table: every severity
+starts in the same column and so does every message, even across files with names of
+different lengths:
+
+```text
+lua/config/lsp.lua|3 col 1 error  | undefined global 'x'
+init.lua|120 col 14        warning| unused local 'm'
+```
+
+Each entry's severity and message are shown in that severity's diagnostic colour; file
+name and line/column keep the list's usual colours. Diagnostics turned off with `<leader>td` are not listed, and when there is
 nothing to list a notification says so instead of opening an empty list.
 
 In any location list window, `<CR>` jumps to the entry and moves the cursor to the file
-(the list stays open, so `<C-w>j` goes back to it) and `<Esc>` closes the list and returns
+(the list stays open, so `<C-j>` goes back to it) and `<Esc>` closes the list and returns
 to the file. Quickfix windows keep the usual `<Esc>`. Pressing either key again refreshes
 the list in the same window; an unrelated location list (for example from `:lvimgrep`)
 stays reachable with `:lolder`. The list is a snapshot and does not update by itself.
