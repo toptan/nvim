@@ -9,6 +9,8 @@ local servers = {
   objc = "clangd",
   objcpp = "clangd",
   cuda = "clangd",
+  sh = "bashls",
+  bash = "bashls",
 }
 local enabled = {}
 
